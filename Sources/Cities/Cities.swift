@@ -4,31 +4,31 @@
 import Foundation
 
 public enum CitiesError: Error {
-    case fileNotFound
-    case decodingError
+  case fileNotFound
+  case decodingError
 }
 
 public class Cities {
-    private var cities: [City] = []
-    
-    public init() throws {
-        try loadCities()
+  private var cities: [City] = []
+
+  public init() throws {
+    try loadCities()
+  }
+
+  private func loadCities() throws {
+    guard let url = Bundle.module.url(forResource: "cities", withExtension: "json") else {
+      throw CitiesError.fileNotFound
     }
-    
-    private func loadCities() throws {
-        guard let url = Bundle.module.url(forResource: "cities", withExtension: "json") else {
-            throw CitiesError.fileNotFound
-        }
-        
-        let data = try Data(contentsOf: url)
-        cities = try JSONDecoder().decode([City].self, from: data)
-    }
-    
-    public func getAllCities() -> [City] {
-        return cities
-    }
-    
-    public func getRandomCity() -> City? {
-        return cities.randomElement()
-    }
+
+    let data = try Data(contentsOf: url)
+    cities = try JSONDecoder().decode([City].self, from: data)
+  }
+
+  public func getAllCities() -> [City] {
+    return cities
+  }
+
+  public func getRandomCity() -> City? {
+    return cities.randomElement()
+  }
 }
